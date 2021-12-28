@@ -1,0 +1,5 @@
+---
+# vars file for sentinel
+user: root
+home_dir: "/root"
+publicIP: "{{ publicIP }}"

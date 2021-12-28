@@ -1,0 +1,8 @@
+# Name of the network interface
+interface = "wg0"
+
+# Port number to accept the incoming connections
+listen_port = 14296
+
+# Server private key
+private_key = "UDAljdTpJySyjjL824uXSej7KJRwRyO03N31LZMy6c1OnEE0="

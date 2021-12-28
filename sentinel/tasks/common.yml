@@ -1,0 +1,44 @@
+- name: Creates sentinelnode directory
+  file:
+    path: "{{ home_dir }}/.sentinelnode"
+    state: directory
+
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+- name: Install common common_packages
+  package:
+    name:
+      - curl
+      - iptables-persistent
+      - git
+      - openssl
+    state: present
+
+- name: Enable IPv6 support for Docker
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: Enable NAT for the private Docker subnet on the host
+  script: nat.sh
+
+- name: Reload service docker
+  service:
+    name: docker
+    state: reloaded
+  ignore_errors: yes
+- openssl_privatekey:
+    path: "{{ home_dir }}/.sentinelnode/tls.key"
+    size: 2048
+
+- openssl_csr:
+    path: "{{ home_dir }}/.sentinelnode/tls.csr"
+    privatekey_path: "{{ home_dir }}/.sentinelnode/tls.key"
+
+- openssl_certificate:
+    provider: selfsigned
+    path: "{{ home_dir }}/.sentinelnode/tls.crt"
+    privatekey_path: "{{ home_dir }}/.sentinelnode/tls.key"
+    csr_path: "{{ home_dir }}/.sentinelnode/tls.csr"

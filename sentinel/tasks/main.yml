@@ -1,0 +1,5 @@
+---
+# tasks file for sentinel
+
+- include_tasks: common.yml
+- include_tasks: sentinel-dvpn-node.yml

@@ -1,0 +1,7 @@
+- hosts: All
+  gather_facts: yes
+  become: yes
+  user: root
+  roles:
+    - geerlingguy.docker
+    - sentinel

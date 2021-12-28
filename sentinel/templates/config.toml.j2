@@ -1,0 +1,41 @@
+[handshake]
+# Enable Handshake DNS resolver
+enable = true
+
+# Number of peers
+peers = 8
+
+[keyring]
+# Underlying storage mechanism for keys
+backend = "file"
+
+# Name of the key with which to sign
+from = "BridgeTowerdVPN"
+
+[node]
+# Time interval between each set_sessions operation
+interval_set_sessions = "2m0s"
+
+# Time interval between each update_sessions transaction
+interval_update_sessions = "1h55m0s"
+
+# Time interval between each set_status transaction
+interval_update_status = "55m0s"
+
+# API listen-address
+listen_on = "0.0.0.0:8585"
+
+# Name of the node
+moniker = "BridgeTowerdVPN#"
+
+# Per Gigabyte price to charge against the provided bandwidth
+price = "5000000udvpn"
+
+# Address of the provider the node wants to operate under
+provider = ""
+
+# Public URL of the node
+remote_url = "https://{{ publicIP }}:8585"
+[qos]
+# Limit max number of concurrent peers
+max_peers = 250

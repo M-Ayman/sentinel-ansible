@@ -1,0 +1,46 @@
+- name: Get the public IP
+  command: curl --silent ifconfig.me
+  register: publicIP
+
+- set_fact:
+    publicIP: "{{ publicIP.stdout }}"
+
+
+- name: Copy config template
+  template:
+    src: config.toml.j2
+    dest: "{{ home_dir }}/.sentinelnode/config.toml"
+
+
+- name: Copy Wireguard
+  copy:
+    src: wireguard.toml
+    dest: "{{ home_dir }}/.sentinelnode/"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0400
+
+- name: Copy keryingfile
+  copy:
+    src: keyring-file
+    dest: "{{ home_dir }}/.sentinelnode"
+
+
+
+- name: Start the appliction
+  command: |
+    docker run -d \
+    --volume "{{ home_dir }}/.sentinelnode:/root/.sentinelnode" \
+    --volume /lib/modules:/lib/modules \
+    --cap-drop ALL \
+    --cap-add NET_ADMIN \
+    --cap-add NET_BIND_SERVICE \
+    --cap-add NET_RAW \
+    --cap-add SYS_MODULE \
+    --sysctl net.ipv4.ip_forward=1 \
+    --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+    --sysctl net.ipv6.conf.all.forwarding=1 \
+    --sysctl net.ipv6.conf.default.forwarding=1 \
+    --publish 8082:8082/tcp \
+    --publish 20993:20993/udp \
+    ghcr.io/sentinel-official/dvpn-node:latest process start

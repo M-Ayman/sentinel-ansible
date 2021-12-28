@@ -23,4 +23,4 @@
     ansible-galaxy -i inventory main.yml
 
 
-    ![alt text](sens.gif)
+   ![alt text](sens.gif)
